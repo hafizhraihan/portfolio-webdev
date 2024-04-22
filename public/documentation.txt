@@ -1,0 +1,141 @@
+- tambah page projects
+- ganti format tgl yg ditampilin
+- tambah kolom lokasi (_loc) di education
+
+Documentation
+Cara bikin page baru dengan table baru (CRUD di page ny)
+1. Make model
+Masukkan ini ke terminal:
+php artisan make:model <nama halaman> -m
+
+Dia akan membuat 2 file (model dan migration)
+
+2. 
+Open the latest file in the migration folder (database/migrations)
+In the up() function, there are 2 columns created automatically (id and timestamps)
+You can add new columns sesuai kebutuhan, following the format. ($table->datatype('columnname');
+Add '->nullable()' between '(columnname) 'and ';' to specify that this column can be empty.
+
+public function up()
+    {
+        Schema::create('tablename', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+            $table->string('title');
+            $table->text('desc');
+            $table->text('project-pic');
+        });
+    }
+
+3. Migrate
+php artisan migrate --path="database/migrations/2024_04_15_043702_create_projects_table.php"
+
+New table is created, you can check in your phpmyadmin.
+
+4. Create controller
+php artisan make:controller tablenameController --resource
+
+New file is created in the Controllers file. (app/Http/Controllers/tablenameController)
+
+5. Protect table and column name
+This is done to prevent name changes by the system. Sometimes it adds 's' at the end of the table name.
+    protected $table = "tablename";
+    protected $fillable = ['title', 'desc', 'project-pic'];
+
+6. Routing
+Open web.php in the routes file. (routes/web.php)
+
+Add route into your new page
+Route::prefix('dashboard')->middleware('auth')->group(
+    function(){
+	Route::resource('tablename', tablenameController::class);
+    }
+};
+
+Utilizing the PHP Namespace Resolver extension, right click on the squiggly lines, and click import class.
+
+7. Create a new blade.php file for your new page
+You can duplicate an existing folder i.e. 'pages' and replace all the table names in this case 'pages' into your column new table name.
+
+        <a href="{{ route('pages.create') }}" class="btn btn-primary">+ New Page</a>
+
+        <a href="{{ route('tablename.create') }}" class="btn btn-primary">+ New Tablename </a>
+
+
+8. 
+Open your tablenameController.php file and input this into your index and create function.
+public function index()
+    {
+        $data = [];
+        return view('dashboard.tablename.index')->with('data', $data);
+    }
+
+public function create()
+    {
+        return view('dashboard.tablename.index');
+    }
+
+Now you can view the new admin page with 127.0.0.1:8000/dashboard/tablename
+
+9. 
+Open create.blade.php
+Input this into the <form> opening tag to receive any kind of data.
+This is done if you would like to input images into your table.
+
+enctype="multipart/form-data"
+
+
+
+
+
+
+
+
+Cara bikin page baru tanpa table (without CRUD, just updating data)
+
+
+===============================================
+
+<!-- Skills Section-->
+                        <section>
+                            <!-- Skillset Card-->
+                            <div class="card shadow border-0 rounded-4 mb-5">
+                                <div class="card-body p-5">
+                                    <!-- Professional skills list-->
+                                    <div class="mb-5">
+                                        <div class="d-flex align-items-center mb-4">
+                                            <div class="feature bg-primary bg-gradient-primary-to-secondary text-white rounded-3 me-3"><i class="bi bi-tools"></i></div>
+                                            <h3 class="fw-bolder mb-0"><span class="text-gradient d-inline">Professional Skills</span></h3>
+                                        </div>
+                                        <div class="row row-cols-1 row-cols-md-3 mb-4">
+                                            <div class="col mb-4 mb-md-0"><div class="d-flex align-items-center bg-light rounded-4 p-3 h-100">SEO/SEM Marketing</div></div>
+                                            <div class="col mb-4 mb-md-0"><div class="d-flex align-items-center bg-light rounded-4 p-3 h-100">Statistical Analysis</div></div>
+                                            <div class="col"><div class="d-flex align-items-center bg-light rounded-4 p-3 h-100">Web Development</div></div>
+                                        </div>
+                                        <div class="row row-cols-1 row-cols-md-3">
+                                            <div class="col mb-4 mb-md-0"><div class="d-flex align-items-center bg-light rounded-4 p-3 h-100">Network Security</div></div>
+                                            <div class="col mb-4 mb-md-0"><div class="d-flex align-items-center bg-light rounded-4 p-3 h-100">Adobe Software Suite</div></div>
+                                            <div class="col"><div class="d-flex align-items-center bg-light rounded-4 p-3 h-100">User Interface Design</div></div>
+                                        </div>
+                                    </div>
+                                    <!-- Languages list-->
+                                    <div class="mb-0">
+                                        <div class="d-flex align-items-center mb-4">
+                                            <div class="feature bg-primary bg-gradient-primary-to-secondary text-white rounded-3 me-3"><i class="bi bi-code-slash"></i></div>
+                                            <h3 class="fw-bolder mb-0"><span class="text-gradient d-inline">Languages</span></h3>
+                                        </div>
+                                        <div class="row row-cols-1 row-cols-md-3 mb-4">
+                                            <div class="col mb-4 mb-md-0"><div class="d-flex align-items-center bg-light rounded-4 p-3 h-100">HTML</div></div>
+                                            <div class="col mb-4 mb-md-0"><div class="d-flex align-items-center bg-light rounded-4 p-3 h-100">CSS</div></div>
+                                            <div class="col"><div class="d-flex align-items-center bg-light rounded-4 p-3 h-100">JavaScript</div></div>
+                                        </div>
+                                        <div class="row row-cols-1 row-cols-md-3">
+                                            <div class="col mb-4 mb-md-0"><div class="d-flex align-items-center bg-light rounded-4 p-3 h-100">Python</div></div>
+                                            <div class="col mb-4 mb-md-0"><div class="d-flex align-items-center bg-light rounded-4 p-3 h-100">Ruby</div></div>
+                                            <div class="col"><div class="d-flex align-items-center bg-light rounded-4 p-3 h-100">Node.js</div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
