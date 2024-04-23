@@ -104,7 +104,8 @@ class projectController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = portfolio::where('id', $id)->where('type', 'project')->first();
+        return view('dashboard.project.edit')->with('data', $data);
     }
 
     /**
