@@ -34,7 +34,7 @@
                 name="img"
                 id="img"
                 aria-describedby="helpId"
-                value="{{ $data->img }}"
+                value="{{ asset(''.$data->img) }}"
             />
         </div>
 
